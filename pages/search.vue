@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mt-header title="搜索">
+    <mt-header title="搜索" fixed >
       <mt-button icon="back" slot="left" v-on:click="back"></mt-button>
       <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
@@ -37,6 +37,8 @@
 </script>
 
 <style scoped>
-
+  #search_box{
+    margin-top:40px;
+  }
 
 </style>
