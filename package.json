@@ -8,6 +8,7 @@
     "dev": "nodemon -w ./server -w ./start.js --exec node ./start.js",
     "build": "nuxt build && backpack build",
     "start": "cross-env NODE_ENV=production node ./start.js",
+    "pm2": "cross-env NODE_ENV=production pm2 start ./start.js",
     "precommit": "npm run lint",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "generate": "nuxt generate"
