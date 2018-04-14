@@ -1,7 +1,7 @@
 <template>
   <mt-tabbar v-model="selected" :fixed="true">
     <mt-tab-item v-for="(item, index) in items" :id="item.id" :key="index">
-      <img slot="icon" :src="item.icon">
+      <img slot="icon" :src="index == selected ? item.icon_l : item.icon_h">
       {{ item.name }}
     </mt-tab-item>
   </mt-tabbar>
@@ -10,37 +10,49 @@
 <script>
   export default {
     watch: {
-      selected: function (val, oldVal) {
+      selected: function(val, oldVal) {
         // 这里就可以通过 val 的值变更来确定
         this.$router.push(this.items[val].link)
       }
     },
+    created() {
+      if(this.$route.path == '/') {
+        this.selected = 1
+      }
+      if(this.$route.path == '/stackroom') {
+        this.selected = 2
+      }
+    },
     data() {
       return {
-        selected: 1,
+        selected: 0,
         items: [
           {
             id: 0,
             name: '书架',
-            icon: 'http://manga.1kxun.mobi/images/mycenter/20-2faef5f42ec1906ff809ffed9f1bb2bb.jpg',
+            icon_h: 'static/img/icon/i_shujia_h.png',
+            icon_l: 'static/img/icon/i_shujia_l.png',
             link: '/'
           },
           {
             id: 1,
             name: '精选',
-            icon: 'http://manga.1kxun.mobi/images/mycenter/20-2faef5f42ec1906ff809ffed9f1bb2bb.jpg',
+            icon_h: 'static/img/icon/i_jewelry_h.png',
+            icon_l: 'static/img/icon/i_jewelry_l.png',
             link: '/'
           },
           {
             id: 2,
             name: '书库',
-            icon: 'http://manga.1kxun.mobi/images/mycenter/20-2faef5f42ec1906ff809ffed9f1bb2bb.jpg',
+            icon_h: 'static/img/icon/i_category_h.png',
+            icon_l: 'static/img/icon/i_category_l.png',
             link: '/stackroom'
           },
           {
             id: 3,
-            name: '发现',
-            icon: 'http://manga.1kxun.mobi/images/mycenter/20-2faef5f42ec1906ff809ffed9f1bb2bb.jpg',
+            name: '个人',
+            icon_h: 'static/img/icon/i_user_h.png',
+            icon_l: 'static/img/icon/i_user_l.png',
             link: '/'
           }
         ]

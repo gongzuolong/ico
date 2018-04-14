@@ -84,7 +84,11 @@ module.exports = {
   /*
   ** Global CSS
   */
-  css: ['~static/css/main.css'],
+  css: ['~static/css/main.css', 'mint-ui/lib/style.css'],
+  /*
+  ** plugins
+  */
+  plugins: [{ src: '~plugins/mintui.js', ssr: true }],
   /*
   ** Customize the progress-bar color
   */
@@ -129,7 +133,7 @@ module.exports = {
 
 
 
-var host = process.env.HOST || 'localhost';
+var host = process.env.HOST || '127.0.0.1';
 var env = process.env.NOOD_ENV || 'development';
 var conf = !(function webpackMissingModule() { var e = new Error("Cannot find module \".\""); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 

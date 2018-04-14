@@ -22,6 +22,9 @@
         search_value: ''
       }
     },
+    beforeCreate() {
+      this.$store.commit('SET_TABBAR_SHOW', 0)
+    },
     computed: {
       ...mapState([
         // 映射 this.xxx 为 store.state.xxx

@@ -149,9 +149,11 @@
         }
       }
     },
-    beforeCreate () {
+    beforeCreate() {
       // 请求所有家族和主要人物
       this.$store.dispatch('fetchPosts')
+      this.$store.commit('SET_TABBAR_SHOW', 1)
+      this.$store.commit('SET_TABBAR_SELETED', 1)
     },
     mounted: function() {
       this.$nextTick(function() {
