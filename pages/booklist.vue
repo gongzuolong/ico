@@ -69,9 +69,9 @@
         setTimeout(async () => {
           let data = await Services.books(loadpage)
           this.$store.commit('SET_BOOKS', this.books.concat(data))
+          loadpage++
           if(data.length == 20) {
             this.loading = false
-            loadpage++
           } else {
             this.isend = true
             Toast({message: '已全部加载完成', duration: 3000})
