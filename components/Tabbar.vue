@@ -31,7 +31,6 @@
         this.selected = 2
         this.$store.commit('SET_TABBAR_SHOW', 1)
       }
-      console.log('aa')
     },
     data() {
       return {
@@ -46,17 +45,17 @@
           },
           {
             id: 1,
-            name: '书库',
-            icon_h: 'static/img/icon/i_category_h.png',
-            icon_l: 'static/img/icon/i_category_l.png',
-            link: '/stackroom'
-          },
-          {
-            id: 2,
             name: '精选',
             icon_h: 'static/img/icon/i_jewelry_h.png',
             icon_l: 'static/img/icon/i_jewelry_l.png',
             link: '/'
+          },
+          {
+            id: 2,
+            name: '书库',
+            icon_h: 'static/img/icon/i_category_h.png',
+            icon_l: 'static/img/icon/i_category_l.png',
+            link: '/stackroom'
           },
           {
             id: 3,

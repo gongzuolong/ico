@@ -55,7 +55,6 @@
       this.$store.dispatch('fetchTags')
       this.$store.commit('SET_TABBAR_SHOW', 1)
       this.$store.commit('SET_TABBAR_SELETED', 2)
-      console.log('fff')
     },
     computed: {
       ...mapState([

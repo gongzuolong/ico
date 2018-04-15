@@ -6,7 +6,8 @@
     <div class="books" v-infinite-scroll="loadMore"
          infinite-scroll-disabled="loading"
          infinite-scroll-distance="10">
-      <div class="book" v-for="(item, index) in books" :key="index">
+      <nuxt-link v-for="(item, index) in books" :key="index" :to="{ path:'/book/' + item.bookid }">
+      <div class="book">
         <div class="bookimg">
           <img :src="item.bookimg">
         </div>
@@ -16,6 +17,7 @@
           <span class="author">{{ item.author }}</span>
         </div>
       </div>
+      </nuxt-link>
 
       <div class="loadmoreicon" v-if="loading && !isend">
         <div class="loadmoreicon_icon">
