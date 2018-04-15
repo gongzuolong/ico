@@ -11,24 +11,16 @@
       </div>
     </div>
 
-    <div id="tags" v-if="tags.length > 0">
-      <mt-loadmore :top-method="loadTop" :bottom-all-loaded="allLoaded" ref="loadmore"
-                   :bottomAllLoaded="true">
-        <div class="tag_item" v-for="(item, index) in tags" :key="index">
-          <nuxt-link :to="{name:'booklist',params:{id:item.tagid,name:item.name}}">
-            <div class="tag_icon"><img :src="item.icon"></div>
-            <div class="tag_text">
-              <span class="name">{{ item.name }}</span>
-              <span class="number">{{ item.number }}</span>
-            </div>
-          </nuxt-link>
-        </div>
-
-        <!--<div slot="top" class="mint-loadmore-top">-->
-        <!--<span v-show="topStatus !== 'loading'" :class="{ 'rotate': topStatus === 'drop' }">↓</span>-->
-        <!--<span v-show="topStatus === 'loading'">Loading...</span>-->
-        <!--</div>-->
-      </mt-loadmore>
+    <div id="tags">
+      <div class="tag_item" v-for="(item, index) in tags" :key="index">
+        <nuxt-link :to="{name:'booklist',params:{id:item.tagid,name:item.name}}">
+          <div class="tag_icon"><img :src="item.icon"></div>
+          <div class="tag_text">
+            <span class="name">{{ item.name }}</span>
+            <span class="number">{{ item.number }}</span>
+          </div>
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
@@ -63,6 +55,7 @@
       this.$store.dispatch('fetchTags')
       this.$store.commit('SET_TABBAR_SHOW', 1)
       this.$store.commit('SET_TABBAR_SELETED', 2)
+      console.log('fff')
     },
     computed: {
       ...mapState([
@@ -74,15 +67,6 @@
       select_category(index) {
         this.category_seleted_index = index
         this.$store.dispatch('fetchTags', index + 1)
-      },
-      loadTop() {
-        this.$refs.loadmore.onTopLoaded()
-      },
-      loadBottom() {
-        console.log('loadbottom')
-      },
-      allLoaded() {
-        console.log('allloaded')
       }
     }
   }
@@ -116,6 +100,7 @@
     width:75%;
     background:rgba(255, 255, 255, 0.2);
     overflow-y:scroll;
+    padding-bottom:55px;
   }
   #tags .tag_item{
     display:inline-block;

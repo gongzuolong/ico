@@ -1,10 +1,17 @@
 import axios from 'axios'
+import _ from 'lodash'
+import allbooks from '../server/crawler/data/books'
 
 const baseUrl = 'http://api.en.dailymanga.mobi'
 
 class Services {
   poster() {
     return axios.get(`${baseUrl}/api/home/getPosterList?_brand=web`)
+  }
+
+  books(page) {
+    var data = _.slice(allbooks, page * 20, page * 20 + 20)
+    return data
   }
 
   tags(categoryId) {

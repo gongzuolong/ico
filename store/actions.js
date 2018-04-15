@@ -9,5 +9,9 @@ export default {
   async fetchTags({ state }, categoryId) {
     const res = await Services.tags(categoryId)
     state.tags = res
+  },
+  async fetchBooks({ state }, page) {
+    const res = await Services.books(page)
+    state.books = state.books.concat(res)
   }
 }

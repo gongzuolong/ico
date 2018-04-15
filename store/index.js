@@ -11,7 +11,8 @@ const store = () => new Vuex.Store({
     tabbar_show: 1,
     tabbar_seleted: 1,
     postsData: [],
-    tags: []
+    tags: [],
+    books: []
   },
   mutations,
   actions

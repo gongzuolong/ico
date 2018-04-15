@@ -1,21 +1,14 @@
 <template>
   <div>
     <nuxt/>
-    <MyTabbar v-if="tabbar_show == 1"/>
+    <MyTabbar />
   </div>
 </template>
 
 <script>
   import MyTabbar from '../components/Tabbar.vue'
-  import {mapState} from 'vuex'
 
   export default {
-    computed: {
-      ...mapState([
-        // 映射 this.xxx 为 store.state.xxx
-        'tabbar_show'
-      ])
-    },
     components: {
       MyTabbar
     }

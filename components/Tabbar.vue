@@ -1,5 +1,5 @@
 <template>
-  <mt-tabbar v-model="selected" :fixed="true">
+  <mt-tabbar v-model="selected" :fixed="true" v-if="tabbar_show == 1">
     <mt-tab-item v-for="(item, index) in items" :id="item.id" :key="index">
       <img slot="icon" :src="index == selected ? item.icon_l : item.icon_h">
       {{ item.name }}
@@ -8,6 +8,8 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+
   export default {
     watch: {
       selected: function(val, oldVal) {
@@ -15,13 +17,21 @@
         this.$router.push(this.items[val].link)
       }
     },
+    computed: {
+      ...mapState([
+        'tabbar_show'
+      ])
+    },
     created() {
       if(this.$route.path == '/') {
         this.selected = 1
+        this.$store.commit('SET_TABBAR_SHOW', 1)
       }
       if(this.$route.path == '/stackroom') {
         this.selected = 2
+        this.$store.commit('SET_TABBAR_SHOW', 1)
       }
+      console.log('aa')
     },
     data() {
       return {

@@ -7,5 +7,8 @@ export default {
   },
   SET_TABBAR_SELETED: (state, value) => {
     state.tabbar_seleted = value
+  },
+  SET_BOOKS: (state, value) => {
+    state.books = value
   }
 }
