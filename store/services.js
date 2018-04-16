@@ -1,7 +1,8 @@
 import axios from 'axios'
 import _ from 'lodash'
 import allbooks from '../server/crawler/data/books'
-import allchapters from '../server/crawler/data/chapters'
+
+const allchpaters = require('../server/crawler/data/chapters')
 
 const baseUrl = 'http://api.en.dailymanga.mobi'
 
