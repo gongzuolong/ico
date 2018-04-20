@@ -6,8 +6,8 @@ import conf from './config'
 //import Route from './routers'
 import Router from 'koa-router'
 
-import books from './models/books'
-import chapters from './models/chapters'
+//import books from './models/books'
+//import chapters from './models/chapters'
 //import dbinit from './dbInit'
 
 const app = new Koa()
@@ -34,52 +34,52 @@ router.get('/api/book/list/:page', async (ctx, next) => {
   ctx.body = res
 })
 
-router.get('/api/book/detail/:id', async (ctx, next) => {
-  let res = {data: {}}
-  let {dataValues} = await books.model.findById(ctx.params.id)
-  res.data = dataValues
-  ctx.set('Content-Type', 'application/json;charset=utf-8')
-  ctx.body = res
-})
-
-router.get('/api/book/chapter/:id', async (ctx, next) => {
-  let res = {data: []}
-  let rows = await chapters.model.findAll({where: {bookid: ctx.params.id}, order: [['id', 'asc']]})
-  for(let i = 0; i < rows.length; i++) {
-    let data = {
-      name: rows[i].title,
-      id: rows[i].id
-    }
-    res.data.push(data)
-  }
-  ctx.set('Content-Type', 'application/json;charset=utf-8')
-  ctx.body = res
-})
-
-router.get('/api/book/content/:id', async (ctx, next) => {
-  let res = {data: {}}
-  let {dataValues} = await chapters.model.findById(ctx.params.id)
-  res.data.content = readFileSync(app_path + dataValues.textfile, {encoding: 'utf8'})
-  res.data.title = dataValues.title
-  res.data.bookid = dataValues.bookid
-  res.data.id = dataValues.id
-  ctx.set('Content-Type', 'application/json;charset=utf-8')
-  ctx.body = res
-})
-
-router.get('/api/book/next_content/:bookid/:id', async (ctx, next) => {
-  let res = {data: {}}
-  let {dataValues} = await chapters.model.findOne({where: {bookid: ctx.params.bookid, id: {$gt: ctx.params.id}}})
-  res.data.content = readFileSync(app_path + dataValues.textfile, {encoding: 'utf8'})
-  res.data.title = dataValues.title
-  res.data.bookid = dataValues.bookid
-  res.data.id = dataValues.id
-  ctx.set('Content-Type', 'application/json;charset=utf-8')
-  ctx.body = res
-})
-
-app.use(router.routes())
-app.use(router.allowedMethods())
+// router.get('/api/book/detail/:id', async (ctx, next) => {
+//   let res = {data: {}}
+//   let {dataValues} = await books.model.findById(ctx.params.id)
+//   res.data = dataValues
+//   ctx.set('Content-Type', 'application/json;charset=utf-8')
+//   ctx.body = res
+// })
+//
+// router.get('/api/book/chapter/:id', async (ctx, next) => {
+//   let res = {data: []}
+//   let rows = await chapters.model.findAll({where: {bookid: ctx.params.id}, order: [['id', 'asc']]})
+//   for(let i = 0; i < rows.length; i++) {
+//     let data = {
+//       name: rows[i].title,
+//       id: rows[i].id
+//     }
+//     res.data.push(data)
+//   }
+//   ctx.set('Content-Type', 'application/json;charset=utf-8')
+//   ctx.body = res
+// })
+//
+// router.get('/api/book/content/:id', async (ctx, next) => {
+//   let res = {data: {}}
+//   let {dataValues} = await chapters.model.findById(ctx.params.id)
+//   res.data.content = readFileSync(app_path + dataValues.textfile, {encoding: 'utf8'})
+//   res.data.title = dataValues.title
+//   res.data.bookid = dataValues.bookid
+//   res.data.id = dataValues.id
+//   ctx.set('Content-Type', 'application/json;charset=utf-8')
+//   ctx.body = res
+// })
+//
+// router.get('/api/book/next_content/:bookid/:id', async (ctx, next) => {
+//   let res = {data: {}}
+//   let {dataValues} = await chapters.model.findOne({where: {bookid: ctx.params.bookid, id: {$gt: ctx.params.id}}})
+//   res.data.content = readFileSync(app_path + dataValues.textfile, {encoding: 'utf8'})
+//   res.data.title = dataValues.title
+//   res.data.bookid = dataValues.bookid
+//   res.data.id = dataValues.id
+//   ctx.set('Content-Type', 'application/json;charset=utf-8')
+//   ctx.body = res
+// })
+//
+// app.use(router.routes())
+// app.use(router.allowedMethods())
 
 const start = async () => {
   let config = require('../nuxt.config.js')

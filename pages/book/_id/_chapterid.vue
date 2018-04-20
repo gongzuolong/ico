@@ -18,7 +18,6 @@
 
 <script>
   import Services from '../../../store/services'
-  import {Toast} from 'mint-ui'
 
   export default {
     head() {
