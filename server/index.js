@@ -3,6 +3,7 @@ import {readFileSync} from 'fs'
 import {resolve} from 'path'
 import {Nuxt, Builder} from 'nuxt'
 import conf from './config'
+import cors from 'koa2-cors'
 //import Route from './routers'
 import Router from 'koa-router'
 
@@ -13,6 +14,17 @@ import chapters from './models/chapters'
 const app = new Koa()
 var router = new Router()
 const app_path = resolve(__dirname, '../')
+
+app.use(cors({
+  origin: function (ctx) {
+    return '*'
+  },
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}))
 
 router.get('/api/book/list/:page', async (ctx, next) => {
   let res = {data: []}
@@ -30,7 +42,6 @@ router.get('/api/book/list/:page', async (ctx, next) => {
     }
     res.data.push(data)
   }
-  ctx.set('Access-Control-Allow-Origin', '*')
   ctx.set('Content-Type', 'application/json;charset=utf-8')
   ctx.body = res
 })
