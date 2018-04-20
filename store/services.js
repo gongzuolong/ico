@@ -9,7 +9,7 @@ class Services {
   }
 
   books(page) {
-    return axios.get(`http://47.98.201.35/:3000/api/book/list/${page}`)
+    return axios.get(`http://47.98.201.35:3000/api/book/list/${page}`)
   }
 
   findbookbyid(bookid) {
