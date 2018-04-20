@@ -16,20 +16,20 @@ const app_path = resolve(__dirname, '../')
 
 router.get('/api/book/list/:page', async (ctx, next) => {
   let res = {data: []}
-  let {rows} = await books.model.findAndCountAll({
-    limit: 20,
-    offset: ctx.params.page * 20
-  })
-  for(let i = 0; i < rows.length; i++) {
-    let data = {
-      bookid: rows[i].id,
-      bookname: rows[i].title,
-      bookintro: rows[i].intro,
-      bookimg: rows[i].img,
-      author: rows[i].author
-    }
-    res.data.push(data)
-  }
+  // let {rows} = await books.model.findAndCountAll({
+  //   limit: 20,
+  //   offset: ctx.params.page * 20
+  // })
+  // for(let i = 0; i < rows.length; i++) {
+  //   let data = {
+  //     bookid: rows[i].id,
+  //     bookname: rows[i].title,
+  //     bookintro: rows[i].intro,
+  //     bookimg: rows[i].img,
+  //     author: rows[i].author
+  //   }
+  //   res.data.push(data)
+  // }
   ctx.set('Content-Type', 'application/json;charset=utf-8')
   ctx.body = res
 })
