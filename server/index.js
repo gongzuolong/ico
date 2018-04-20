@@ -30,6 +30,7 @@ router.get('/api/book/list/:page', async (ctx, next) => {
     }
     res.data.push(data)
   }
+  ctx.set('Access-Control-Allow-Origin:', '*')
   ctx.set('Content-Type', 'application/json;charset=utf-8')
   ctx.body = res
 })
