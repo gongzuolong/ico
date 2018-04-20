@@ -9,23 +9,23 @@ class Services {
   }
 
   books(page) {
-    return axios.get(`http://localhost:3000/api/book/list/${page}`)
+    return axios.get(`http://47.98.201.35/:3000/api/book/list/${page}`)
   }
 
   findbookbyid(bookid) {
-    return axios.get(`http://localhost:3000/api/book/detail/${bookid}`)
+    return axios.get(`http://47.98.201.35:3000/api/book/detail/${bookid}`)
   }
 
   findchaptersbybookid(bookid) {
-    return axios.get(`http://localhost:3000/api/book/chapter/${bookid}`)
+    return axios.get(`http://47.98.201.35:3000/api/book/chapter/${bookid}`)
   }
 
   getContent(id) {
-    return axios.get(`http://localhost:3000/api/book/content/${id}`)
+    return axios.get(`http://47.98.201.35:3000/api/book/content/${id}`)
   }
 
   getNextContent(bookid, id) {
-    return axios.get(`http://localhost:3000/api/book/next_content/${bookid}/${id}`)
+    return axios.get(`http://47.98.201.35:3000/api/book/next_content/${bookid}/${id}`)
   }
 
   tags(categoryId) {
