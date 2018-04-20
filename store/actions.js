@@ -12,6 +12,6 @@ export default {
   },
   async fetchBooks({ state }, page) {
     const res = await Services.books(page)
-    state.books = state.books.concat(res)
+    state.books = state.books.concat(res.data.data)
   }
 }

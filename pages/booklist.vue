@@ -69,10 +69,10 @@
         if(this.loading) return false
         this.loading = true
         setTimeout(async () => {
-          let data = await Services.books(loadpage)
-          this.$store.commit('SET_BOOKS', this.books.concat(data))
+          let row = await Services.books(loadpage)
+          this.$store.commit('SET_BOOKS', this.books.concat(row.data.data))
           loadpage++
-          if(data.length == 20) {
+          if(row.data.data.length == 20) {
             this.loading = false
           } else {
             this.isend = true

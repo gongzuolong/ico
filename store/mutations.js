@@ -10,5 +10,11 @@ export default {
   },
   SET_BOOKS: (state, value) => {
     state.books = value
+  },
+  SET_CACHE_CHAPTERS: (state, value) => {
+    state.cache_chapters = value
+  },
+  SET_CACHE_BOOK: (state, value) => {
+    state.cache_book = value
   }
 }

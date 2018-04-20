@@ -1,8 +1,5 @@
 import axios from 'axios'
 import _ from 'lodash'
-import allbooks from '../server/crawler/data/books'
-
-const allchapters = []
 
 const baseUrl = 'http://api.en.dailymanga.mobi'
 
@@ -12,19 +9,23 @@ class Services {
   }
 
   books(page) {
-    var data = _.slice(allbooks, page * 20, page * 20 + 20)
-    return data
+    return axios.get(`/api/book/list/${page}`)
   }
 
   findbookbyid(bookid) {
-    var data = _.find(allbooks, {bookid: bookid})
-    return data
+    return axios.get(`/api/book/detail/${bookid}`)
   }
 
   findchaptersbybookid(bookid) {
-    var data = _.find(allchapters, {bookid: bookid})
-    if(data) return data.chapters
-    else return []
+    return axios.get(`/api/book/chapter/${bookid}`)
+  }
+
+  getContent(id) {
+    return axios.get(`/api/book/content/${id}`)
+  }
+
+  getNextContent(bookid, id) {
+    return axios.get(`/api/book/next_content/${bookid}/${id}`)
   }
 
   tags(categoryId) {

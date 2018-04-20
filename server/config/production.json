@@ -1,3 +1,9 @@
 {
-  "port": 3000
+  "port": 3000,
+  "db": {
+    "host": "localhost",
+    "user": "83c395cd",
+    "password": "730ebcd6b5394f7ee71b9ddec3b945fa",
+    "database": "ibook"
+  }
 }
