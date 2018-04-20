@@ -78,8 +78,8 @@ router.get('/api/book/list/:page', async (ctx, next) => {
 //   ctx.body = res
 // })
 //
-// app.use(router.routes())
-// app.use(router.allowedMethods())
+app.use(router.routes())
+app.use(router.allowedMethods())
 
 const start = async () => {
   let config = require('../nuxt.config.js')
