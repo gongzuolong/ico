@@ -33,7 +33,7 @@
       this.bookid = row.data.data.bookid
       this.current_id = row.data.data.id
       this.contents.push({title: row.data.data.title, data: content})
-      this.maxHeight = window.screen.height - 5 + 'px'
+      this.maxHeight = window.screen.height + 'px'
     },
     methods: {
       back() {
@@ -48,7 +48,7 @@
       async loadBottom() {
         console.log('loadbottom')
         let row = await Services.getNextContent(this.bookid, this.current_id)
-        let content = row.data.data.content.replace(/\n/g, "<div class='hang' style='height:5px'></div>")
+        let content = row.data.data.content.replace(/\n/g, "<div class='hang' style='height:15px'></div>")
         this.title = row.data.data.title
         this.current_id = row.data.data.id
         this.contents.push({title: row.data.data.title, data: content})
@@ -67,7 +67,7 @@
             }, 10)
           }
 
-          slowScroll(addHeight)
+          slowScroll(addHeight - 100)
         }, 100)
       }
     },
@@ -89,10 +89,13 @@
 <style scoped>
   #content_box{
     overflow-y:scroll;
+    background-color:rgb(241, 229, 201);
   }
   .content{
     padding:15px;
     text-align:justify;
+    font-size:1.2em;
+    line-height:1.8em;
   }
   .title{
     padding-top:15px;

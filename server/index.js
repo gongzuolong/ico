@@ -16,7 +16,7 @@ var router = new Router()
 const app_path = resolve(__dirname, '../')
 
 app.use(cors({
-  origin: function (ctx) {
+  origin: function(ctx) {
     return '*'
   },
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
@@ -56,7 +56,7 @@ router.get('/api/book/detail/:id', async (ctx, next) => {
 
 router.get('/api/book/chapter/:id', async (ctx, next) => {
   let res = {data: []}
-  let rows = await chapters.model.findAll({where: {bookid: ctx.params.id}, order: [['id', 'asc']]})
+  let rows = await chapters.model.findAll({where: {bookid: ctx.params.id}, order: [['id', 'asc']], limit: 10})
   for(let i = 0; i < rows.length; i++) {
     let data = {
       name: rows[i].title,
