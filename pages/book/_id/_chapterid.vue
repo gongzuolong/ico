@@ -67,7 +67,7 @@
             }, 10)
           }
 
-          slowScroll(addHeight - 100)
+          slowScroll(addHeight - 200)
         }, 100)
       }
     },
