@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize'
 
-const sequelize = new Sequelize('ibook', '83c395cd', '730ebcd6b5394f7ee71b9ddec3b945fa', {
+const sequelize = new Sequelize('ibook', 'root', 'root', {
   host: 'localhost',
   dialect: 'mysql',
 

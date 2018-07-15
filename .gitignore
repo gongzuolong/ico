@@ -13,3 +13,5 @@ dist
 build/main.js
 build/main.map
 build/main.js
+
+txt/*

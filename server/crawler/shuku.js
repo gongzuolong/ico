@@ -3,23 +3,29 @@ import R from 'ramda'
 import rp from 'request-promise'
 import cheerio from 'cheerio'
 import {resolve} from 'path'
-import {writeFileSync} from 'fs'
+import {writeFileSync, existsSync, mkdirSync} from 'fs'
+import books from '../models/books'
+import chapters from '../models/chapters'
 
-var books = []
+//var books = []
 var books_jsonfile_index = 1
 var books_category_index = 1
 var booklist_url = 'https://www.qkshu.com/dushi/'
 
 const sleep = time => new Promise(resolve => setTimeout(resolve, time))
+const headers = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+  'Host': 'www.qkshu.com',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+}
+var fetch_flag = false
+const textfile_dir = resolve(__dirname, '../../')
 
-export const getbook = async (url) => {
+
+export const getChapterContent = async (url) => {
   const options = {
     uri: url,
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
-      'Host': 'www.qkshu.com',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-    },
+    headers: headers,
     // agentClass: Agent,
     // agentOptions: {
     //   socksHost: 'localhost',
@@ -31,96 +37,95 @@ export const getbook = async (url) => {
   console.log('开始抓取 ' + url)
 
   var $ = await rp(options)
-
-  $('div#cate-list div').each(function() {
-    let bookimg = $(this).find('div.bookimg a img').attr('src')
-    let booklink = $(this).find('div.bookimg a').attr('href')
-    let bookname = $(this).find('div.bookinfo .bookname a').text()
-    let author = $(this).find('div.bookinfo .author').text()
-    const data = {
-      bookimg,
-      bookname,
-      booklink,
-      author
-    }
-
-    books.push(data)
+  var p = []
+  $('div#content p').each(function() {
+    p.push($(this).text())
   })
 
-  await sleep(1000)
-
-  let next = $('div.listpage .right a')
-  if(next.text() == '下一页') {
-    let nexthref = next.attr('href')
-    if(nexthref) {
-      getbook(`https://www.qkshu.com/dushi/${nexthref}`)
-    } else {
-      let jsonSavePath = resolve(__dirname, `data/books.json`)
-      const filterBook = R.compose(
-        R.map((data) => {
-          data.bookid = data.booklink.match(/\/book\/(.*?)\//)[1]
-          return data
-        }),
-        R.filter(data => data.bookimg && data.bookname && data.booklink && data.author)
-      )
-
-      books = filterBook(books)
-      writeFileSync(jsonSavePath, JSON.stringify(books, null, 2))
-      console.log(`write to ${jsonSavePath} ok`)
-    }
-
-  }
-
+  return p.join("\n")
 }
+
+
+export const run = async () => {
+  let rows = await chapters.model.findAll({where: {textfile: null}, order: [['id', 'asc']], limit: 10})
+  if(rows.length == 0) return
+  for(let i = 0; i < rows.length; i++) {
+    let content = await getChapterContent(rows[i].link)
+    let textfile = `/txt/${rows[i].bookid}/${rows[i].id}.txt`
+    if(existsSync(`${textfile_dir}/txt/${rows[i].bookid}`) == false) {
+      mkdirSync(`${textfile_dir}/txt/${rows[i].bookid}`)
+    }
+    writeFileSync(textfile_dir + textfile, content)
+    await chapters.model.update({textfile: textfile}, {where: {id: rows[i].id}, fields: ['textfile']})
+  }
+  run()
+}
+
+run()
+
+//getChapterContent('https://www.qkshu.com/book/laopoxihuancangmimi/10010.html')
+
+// books.init.sync({
+//   force: true
+// })
+// chapters.init.sync({
+//   force: true
+// })
 
 //getbook(booklist_url)
 
-export const getbookchapters = async () => {
-  let booksPath = resolve(__dirname, 'data/books.json')
-  let chaptersPath = resolve(__dirname, 'data/chapters.json')
-  let books = require(booksPath)
+// export const getbookchapters = async () => {
+//
+//   var offset = 210
+//   var limit = 10
+//
+//   while(true) {
+//     let {rows} = await books.model.findAndCountAll({
+//       limit: limit,
+//       offset: offset
+//     })
+//     if(rows.length == 0) break
+//     offset += limit
+//
+//     for(let i = 0; i < rows.length; i++) {
+//       const options = {
+//         uri: rows[i].link,
+//         headers: {
+//           'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+//           'Host': 'www.qkshu.com',
+//           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
+//         },
+//         transform: body => cheerio.load(body)
+//       }
+//
+//       console.log(`开始抓取${rows[i].link}`)
+//       var $ = await rp(options)
+//
+//       let finish = $('div#bookimg .status_text').text() == "已完结" ? 1 : 0
+//       let intro = $('div#des').text()
+//
+//       books.model.update({finish: finish, intro: intro}, {where: {id: rows[i].id}, fields: ['finish', 'intro']})
+//
+//       chapters.model.destroy({where: {bookid: rows[i].id}})
+//
+//       $('div#list ul li').each(function() {
+//         let name = $(this).find('a').text()
+//         let link = rows[i].link + $(this).find('a').attr('href')
+//         chapters.model.create({
+//           bookid: rows[i].id,
+//           title: name,
+//           link: link
+//         })
+//       })
+//
+//       console.log(`${rows[i].title} 章节信息save`)
+//
+//     }
+//
+//     console.log(`------offset:${offset}--------`)
+//
+//   }
+//
+// }
 
-  let chapters = []
-
-  for(let i = 0; i < books.length; i++) {
-
-    const options = {
-      uri: books[i].booklink,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
-        'Host': 'www.qkshu.com',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-      },
-      transform: body => cheerio.load(body)
-    }
-
-    console.log(`开始抓取${books[i].booklink}`)
-    var $ = await rp(options)
-
-    let chapter = _.assign({bookid: books[i].bookid})
-
-    books[i].booktatus = $('div#bookimg .status_text').text()
-    books[i].bookintro = $('div#des').text()
-    chapter.chapters = []
-
-    $('div#list ul li').each(function() {
-      let name = $(this).find('a').text()
-      let link = books[i].booklink + $(this).find('a').attr('href')
-      const chapterdata = {
-        name,
-        link
-      }
-      chapter.chapters.push(chapterdata)
-    })
-
-    chapters.push(chapter)
-
-    await sleep(500)
-  }
-
-  console.log('开始写入')
-  writeFileSync(booksPath, JSON.stringify(books, null, 2))
-  writeFileSync(chaptersPath, JSON.stringify(chapters, null, 2))
-}
-
-getbookchapters()
+//getbookchapters()
